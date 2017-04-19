@@ -56,6 +56,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.command-line-args.command-line-args">
+            function <span class="apidocSignatureSpan"></span>command-line-args
+            <span class="apidocSignatureSpan">(optionDefinitions, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">command-line-args.</span>option</span>
 
         </li>
@@ -109,6 +118,47 @@
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.command-line-args" id="apidoc.module.command-line-args">module command-line-args</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.command-line-args.command-line-args" id="apidoc.element.command-line-args.command-line-args">
+        function <span class="apidocSignatureSpan"></span>command-line-args
+        <span class="apidocSignatureSpan">(optionDefinitions, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function commandLineArgs(optionDefinitions, options) {
+  options = options || {}
+  const Definitions = require('./definitions')
+  const option = require('./option')
+  const Argv = require('./argv')
+  const Output = require('./output')
+  const GroupedOutput = require('./grouped-output')
+
+  const definitions = new Definitions()
+  definitions.load(optionDefinitions)
+  const argv = new Argv()
+  argv.load(options.argv)
+  argv.expandOptionEqualsNotation()
+  argv.expandGetoptNotation()
+  argv.validate(definitions, options)
+
+  const output = definitions.isGrouped() ? new GroupedOutput(definitions, options) : new Output(definitions, options)
+  let optionName
+
+  argv.forEach(arg =&gt; {
+    if (option.isOption(arg)) {
+      optionName = output.set(arg) ? undefined : arg
+    } else {
+      optionName = output.set(optionName, arg) ? undefined : optionName
+    }
+  })
+
+  return output.toObject()
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
 
